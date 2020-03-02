@@ -12,7 +12,7 @@ Description: Implementation of MemoryPool settings.
 
 namespace Memory
 {
-	MemoryPool::MemoryPool(uint32_t size, uint32_t extensionSize) : valid(false)
+	MemoryPool::MemoryPool(uint32_t size, uint32_t extensionSize, ByteAlignment byteAlignment) : valid(false)
 	{
 		if (0 == size
 			|| extensionSize == 0)
@@ -31,6 +31,7 @@ namespace Memory
 		this->extensionSize = extensionSize;
 
 		this->size = size;
+		this->byteAlignment = byteAlignment;
 	}
 
 	MemoryPool::~MemoryPool()
@@ -49,6 +50,12 @@ namespace Memory
 			|| 0 == size)
 		{
 			return NULL;
+		}
+
+		// align bytes
+		if (0 != size % this->byteAlignment)
+		{
+			size = size / this->byteAlignment + this->byteAlignment;
 		}
 
 		if (0 == memoryInfo.size())
@@ -87,6 +94,11 @@ namespace Memory
 		}
 
 		return result;
+	}
+
+	void MemoryPool::SetByteAlignment(ByteAlignment byteAlignment)
+	{
+		this->byteAlignment = byteAlignment;
 	}
 
 	void MemoryPool::Recycle(void* address)
