@@ -20,7 +20,7 @@ namespace Memory
 {
 	class MemoryPool
 	{
-	private:
+	public:
 		enum ByteAlignment
 		{
 			_1Byte,
@@ -32,7 +32,7 @@ namespace Memory
 			_64Byte
 		};
 
-
+	private:
 		typedef struct _MemoryElement
 		{
 			uint32_t beginAddress;
